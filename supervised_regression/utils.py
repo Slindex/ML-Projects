@@ -3,16 +3,14 @@ import tarfile
 import urllib.request
 from pathlib import Path
 
+# Data Analytics libraries
+import matplotlib.pyplot as plt
+
+#ML libraries
+import numpy as np
+
+
 def downloadHousingData():
-    """
-    Downloads the Housing data zip file from a GitHub repository, create the 'data' directory if not exists and finally extracts the content from the zip file.
-
-    Parameters:
-    None
-
-    Returns:
-    None
-    """
 
     zipfilePath = Path('data/housing.tgz')
     housingPath = Path('data/housing.csv')
@@ -35,3 +33,30 @@ def downloadHousingData():
 
         housingDirPath = Path('data/housing')
         housingDirPath.rmdir()
+
+
+def saveGraph(graph_id, tight_layout=True, graph_extension='png', resolution=300):
+
+    imagesPath = Path('images')
+    imagesPath.mkdir(parents=True, exist_ok=True)
+
+    graphPath = imagesPath/f'{graph_id}.{graph_extension}'
+
+    if tight_layout:
+        plt.tight_layout()
+    
+    plt.savefig(graphPath, format=graph_extension, dpi=resolution)
+
+
+def randomDataSplitter(data, test_ratio=0.2):
+
+    indexList = np.random.permutation(len(data))
+    testSize = int(len(data) * test_ratio)
+
+    testIndexes = indexList[:testSize]
+    trainIndexes = indexList[testSize:]
+
+    testSet = data.iloc[testIndexes]
+    trainSet = data.iloc[trainIndexes]
+
+    return trainSet, testSet
