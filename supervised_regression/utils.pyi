@@ -23,7 +23,7 @@ def saveGraph(graph_id: str, tight_layout: bool, graph_extension: str, resolutio
     - graph_extension (str): Extension to save the image (png, jpg, svg, etc...)
     - Resolution (int): DPI resolution for saving the figure
 
-    Returns:
+    Returns
     None
     """
     ...
