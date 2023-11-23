@@ -1,5 +1,6 @@
 from typing import Tuple
 from pandas import DataFrame
+from numpy import ndarray
 
 def downloadHousingData() -> None:
     """
@@ -41,3 +42,18 @@ def randomDataSplitter(data: DataFrame, test_ratio: float) -> Tuple[DataFrame, D
     - testSet (DataFrame): A pandas DataFrame with the test data.
     """
     ...
+
+def designedBarGraph(filename: str, labels: ndarray, values: ndarray, tittle: str, color: str) -> None:
+    """
+    This function creates a minimalistic and visually appealing bar graph and stores it as a png file in an image directory.
+
+    Parameters
+    - filename (str): The file name for the .png graph
+    - labels (ndarray): The X-axis labels
+    - values (ndarray): The Y-axis values
+    - tittle (str): The graph tittle
+    - color (str): The bars colors
+
+    Returns
+    None
+    """

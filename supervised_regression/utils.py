@@ -5,6 +5,7 @@ from pathlib import Path
 
 # Data Analytics libraries
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 
 #ML libraries
 import numpy as np
@@ -60,3 +61,33 @@ def randomDataSplitter(data, test_ratio=0.2):
     trainSet = data.iloc[trainIndexes]
 
     return trainSet, testSet
+
+
+def format_with_thousands_separators(x, p):
+    return "{:,}".format(int(x))
+
+
+def designedBarGraph(filename, labels, values, tittle, color='#329D9C'):
+
+    fig, ax = plt.subplots(figsize=(5, 5))
+
+    ax.bar(labels, values, color=color)
+
+    ax.grid(True, color='grey', linewidth='0.5', axis='y', alpha=0.3)
+
+    ax.set_axisbelow(True)
+
+    ax.set_title(tittle, loc='center', pad=15, weight='bold', fontsize=10, fontfamily='arial')
+
+    ax.tick_params(axis='both', which='both', bottom=False, left=False)
+    ax.tick_params(axis='x', labelsize=8, labelfontfamily='arial')
+    ax.tick_params(axis='y', labelsize=8, labelfontfamily='arial')
+
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+
+    ax.yaxis.set_major_formatter(FuncFormatter(format_with_thousands_separators))
+
+    saveGraph(filename)
