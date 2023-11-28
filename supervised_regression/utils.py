@@ -7,7 +7,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
-#ML libraries
+# ML libraries
 import numpy as np
 
 
@@ -63,11 +63,11 @@ def randomDataSplitter(data, test_ratio=0.2):
     return trainSet, testSet
 
 
-def format_with_thousands_separators(x, p):
+def thousandsFormat(x, p):
     return "{:,}".format(int(x))
 
 
-def designedBarGraph(filename, labels, values, tittle, color='#329D9C'):
+def designedBarGraph(filename, labels, values, tittle, xlabel, ylabel, color='#329D9C'):
 
     fig, ax = plt.subplots(figsize=(5, 5))
 
@@ -79,6 +79,9 @@ def designedBarGraph(filename, labels, values, tittle, color='#329D9C'):
 
     ax.set_title(tittle, loc='center', pad=15, weight='bold', fontsize=10, fontfamily='arial')
 
+    ax.set_xlabel(xlabel, labelpad=10, fontsize=9, fontfamily='arial')
+    ax.set_ylabel(ylabel, labelpad=10, fontsize=9, fontfamily='arial')
+
     ax.tick_params(axis='both', which='both', bottom=False, left=False)
     ax.tick_params(axis='x', labelsize=8, labelfontfamily='arial')
     ax.tick_params(axis='y', labelsize=8, labelfontfamily='arial')
@@ -88,6 +91,6 @@ def designedBarGraph(filename, labels, values, tittle, color='#329D9C'):
     ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
 
-    ax.yaxis.set_major_formatter(FuncFormatter(format_with_thousands_separators))
+    ax.yaxis.set_major_formatter(FuncFormatter(thousandsFormat))
 
     saveGraph(filename)
