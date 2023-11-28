@@ -1,6 +1,7 @@
 # File Management libraries
 import tarfile
 import urllib.request
+from zipfile import ZipFile
 from pathlib import Path
 
 # Data Analytics libraries
@@ -34,6 +35,25 @@ def downloadHousingData():
 
         housingDirPath = Path('data/housing')
         housingDirPath.rmdir()
+
+
+def downloadCaliforniaMap():
+
+    zipfilePath = Path('data/geodata/California_County_Boundaries.zip')
+    mapPath = Path('data/geodata/California_County_Boundaries.shp')
+
+    if not zipfilePath.is_file():
+        Path('data/geodata').mkdir(parents=True, exist_ok=True)
+        print('data/geodata/ directory created')
+
+        URL = 'https://gis-calema.opendata.arcgis.com/datasets/59d92c1bf84a438d83f78465dce02c61_0.zip?outSR=%7B%22latestWkid%22%3A3857%2C%22wkid%22%3A102100%7D'
+        urllib.request.urlretrieve(URL, zipfilePath)
+        print(f'Zip file downloaded from {URL}')
+
+    if not mapPath.is_file():
+        with ZipFile(zipfilePath, 'r') as map_zip:
+            map_zip.extractall(path='data/geodata')
+        print('Map Extracted into data/')
 
 
 def saveGraph(graph_id, tight_layout=True, graph_extension='png', resolution=300):
