@@ -7,9 +7,13 @@ from pathlib import Path
 # Data Analytics libraries
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
+import seaborn as sns
 
 # ML libraries
 import numpy as np
+
+# Math & Statistics
+from math import ceil
 
 
 def downloadHousingData():
@@ -87,7 +91,7 @@ def thousandsFormat(x, p):
     return "{:,}".format(int(x))
 
 
-def designedBarGraph(filename, labels, values, tittle, xlabel, ylabel, color='#329D9C'):
+def barGraph(filename, labels, values, tittle, xlabel, ylabel, color='#329D9C'):
 
     fig, ax = plt.subplots(figsize=(5, 5))
 
@@ -108,9 +112,46 @@ def designedBarGraph(filename, labels, values, tittle, xlabel, ylabel, color='#3
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    ax.spines['bottom'].set_visible(False)
     ax.spines['left'].set_visible(False)
 
     ax.yaxis.set_major_formatter(FuncFormatter(thousandsFormat))
 
     saveGraph(filename)
+
+
+def multiHist(filename, df, bins=50, kde=True, bar_color='#329D9C', kde_color='#472F7D'):
+
+    df = df.select_dtypes(include='number')
+
+    numCols = len(df.columns)
+    numRows = (numCols + 1) // 2
+
+    height = ceil(numCols/2)*3
+    figsize = (15, height)
+
+    fig, axes = plt.subplots(nrows=numRows, ncols=2, figsize=figsize)
+
+    fig.subplots_adjust(hspace=0.5)
+    axes = axes.flatten()
+
+    for i, column in enumerate(df.columns):
+        ax = axes[i]
+
+        sns.histplot(df[column], bins=bins, color=bar_color, alpha=1, kde=kde, line_kws={'lw': 1.5}, ax=ax) #type: ignore
+        ax.lines[0].set_color(kde_color)
+
+        ax.grid(True, color='grey', linewidth='0.5', axis='y', alpha=0.3)
+        ax.set_axisbelow(True)
+
+        ax.set_xlabel('')
+        ax.set_ylabel('')
+
+        ax.set_title(column, loc='center', pad=15, weight='bold', fontsize=12, fontfamily='arial')
+
+        ax.tick_params(axis='x', labelsize=8, labelfontfamily='arial')
+        ax.tick_params(axis='y', labelsize=8, labelfontfamily='arial')
+
+    if numCols % 2 != 0:
+        fig.delaxes(axes[-1])
+
+    saveGraph(filename, tight_layout=False)
